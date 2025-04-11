@@ -22,7 +22,7 @@ class AuthController extends Controller
     // Find the user by email and check their role
     $user = User::where('email', $request->email)->first();
 
-    if (!$user || $user->role !== 'surveyor' || !Hash::check($request->password, $user->password)) {
+    if (!$user || $user->role !== 'user' || !Hash::check($request->password, $user->password)) {
         throw ValidationException::withMessages([
             'email' => ['The provided credentials are incorrect or the user is not authorized.'],
         ]);
