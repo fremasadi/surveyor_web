@@ -36,4 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Respondens Routes
     Route::get('respondens', [RespondenController::class, 'getAllRespondens']);
     Route::get('respondens/{id}', [RespondenController::class, 'getRespondensById']);
+
+    Route::post('/logout', [AuthController::class, 'logout']);
+
 });
