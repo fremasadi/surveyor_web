@@ -27,8 +27,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/data-harian/{id}', [DataHarianController::class, 'editDataHarian']);
     Route::post('/data-harian', [DataHarianController::class, 'addDataHarian']);
 
-
-    // Komoditas Routes
     Route::get('komoditas', [KomoditasController::class, 'getAllKomoditas']);
     Route::get('komoditas/{id}', [KomoditasController::class, 'getKomoditasById']);
 
