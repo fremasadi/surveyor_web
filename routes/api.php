@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DataHarianController;
 use App\Http\Controllers\KomoditasController;
 use App\Http\Controllers\RespondenController;
+use App\Http\Controllers\UserController;
 
 
 /*
@@ -23,6 +24,8 @@ Route::post('login', [AuthController::class, 'login']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [UserController::class, 'me']);
+
     Route::get('data-harian', [DataHarianController::class, 'getDataHarian']);
     Route::put('/data-harian/{id}', [DataHarianController::class, 'editDataHarian']);
     Route::post('/data-harian', [DataHarianController::class, 'addDataHarian']);
