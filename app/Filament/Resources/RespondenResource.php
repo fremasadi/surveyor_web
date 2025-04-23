@@ -17,6 +17,9 @@ class RespondenResource extends Resource
 {
     protected static ?string $model = Responden::class;
 
+    protected static ?string $navigationLabel = 'Penjual'; // Sidebar label
+    protected static ?string $pluralLabel = 'Penjual'; // Halaman label
+
     protected static ?string $navigationIcon = 'heroicon-o-archive-box-arrow-down';
 
     public static function form(Form $form): Form

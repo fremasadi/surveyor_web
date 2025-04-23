@@ -44,9 +44,10 @@ class DataHarianResource extends Resource
                     ->required(),
 
                 Forms\Components\Select::make('responden_id')
-                    ->label('Responden')
+                    ->label('Penjual')
                     ->relationship('responden', 'name') // Menggunakan relasi untuk mengambil nama responden
                     ->required(),
+                
 
                 Forms\Components\DatePicker::make('tanggal')
                     ->label('Tanggal')
@@ -79,7 +80,11 @@ class DataHarianResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('responden.name')
-                    ->label('Responden')
+                    ->label('Penjual')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('responden.address')
+                    ->label('Alamat Penjual')
                     ->sortable()
                     ->searchable(),
 
