@@ -121,7 +121,12 @@ class DataHarianResource extends Resource
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ])
+                Tables\Actions\Action::make('cetak_pdf')
+                    ->label('Cetak PDF')
+                    ->icon('heroicon-o-printer')
+                    ->url(fn ($record) => route('data-harian.cetak-pdf', $record))
+                    ->openUrlInNewTab(),
+            ])            
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);

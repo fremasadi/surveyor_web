@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DataHarian; // Import model DataHarian
 use Illuminate\Support\Facades\Auth;
+use PDF; // pastikan alias sudah di config/app.php jika belum
 
 class DataHarianController extends Controller
 {
@@ -131,4 +132,10 @@ class DataHarianController extends Controller
             'data' => $dataHarian
         ]);
     }
+
+    public function cetakPdf(DataHarian $dataHarian)
+{
+    $pdf = PDF::loadView('pdf.data-harian', compact('dataHarian'));
+    return $pdf->download('data-harian-' . $dataHarian->id . '.pdf');
+}
 }

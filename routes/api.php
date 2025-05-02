@@ -21,6 +21,8 @@ use App\Http\Controllers\UserController;
 */
 
 Route::post('login', [AuthController::class, 'login']);
+Route::get('/data-harian/{dataHarian}/cetak-pdf', [DataHarianController::class, 'cetakPdf'])
+    ->name('data-harian.cetak-pdf');
 
 
 Route::middleware('auth:sanctum')->group(function () {
