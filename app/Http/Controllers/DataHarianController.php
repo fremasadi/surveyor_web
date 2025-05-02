@@ -11,34 +11,34 @@ class DataHarianController extends Controller
     // Fungsi untuk mendapatkan data harian
     public function getDataHarian(Request $request)
 {
-    $user = Auth::user();
+    $user = Auth::user(); // atau Auth::guard('sanctum')->user()
 
-    // Ambil query parameter
-    $tanggal = $request->query('tanggal'); // Format: YYYY-MM-DD
-    $bulan = $request->query('bulan');     // Format: 1-12
-    $tahun = $request->query('tahun');     // Format: YYYY
+    if (!$user) {
+        return response()->json([
+            'message' => 'Unauthorized',
+        ], 401);
+    }
+
+    $tanggal = $request->query('tanggal');
+    $bulan = $request->query('bulan');
+    $tahun = $request->query('tahun');
 
     $dataHarianQuery = DataHarian::where('user_id', $user->id)
         ->with(['komoditas', 'responden']);
 
-    // Filter berdasarkan tanggal jika ada
     if ($tanggal) {
         $dataHarianQuery->whereDate('tanggal', $tanggal);
     }
 
-    // Filter berdasarkan bulan jika ada
     if ($bulan) {
         $dataHarianQuery->whereMonth('tanggal', $bulan);
     }
 
-    // Filter berdasarkan tahun jika ada
     if ($tahun) {
         $dataHarianQuery->whereYear('tanggal', $tahun);
     }
 
-    $dataHarian = $dataHarianQuery->get();
-
-    $dataHarian = $dataHarian->map(function ($item) {
+    $dataHarian = $dataHarianQuery->get()->map(function ($item) {
         return [
             'id' => $item->id,
             'user_id' => $item->user_id,
@@ -59,7 +59,6 @@ class DataHarianController extends Controller
         'data' => $dataHarian
     ]);
 }
-
 
     // Fungsi untuk menambah data harian
     public function addDataHarian(Request $request)
