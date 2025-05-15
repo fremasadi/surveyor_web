@@ -100,13 +100,30 @@ class DataHarianResource extends Resource
                     ->sortable()
                     ->searchable(),
                     Tables\Columns\ToggleColumn::make('status')
-                    ->label('Status')
-                    ->onIcon('heroicon-o-check') // Ikon untuk status true
-                    ->offIcon('heroicon-o-x-circle') // Ikon untuk status false
-                    ->onColor('success') // Warna hijau untuk status true
-                    ->offColor('danger') // Warna merah untuk status false
-                    ->sortable()
-                    ->searchable(),
+    ->label('Status')
+    ->onIcon('heroicon-o-check')
+    ->offIcon('heroicon-o-x-circle')
+    ->onColor('success')
+    ->offColor('danger')
+    ->sortable()
+    ->searchable()
+    // Tambahkan listener untuk menangani perubahan status
+    ->beforeStateUpdated(function (Model $record, $state) {
+        // Optional: validasi sebelum update
+        return true; // Kembalikan true untuk lanjut update
+    })
+    ->afterStateUpdated(function (Model $record, $state) {
+        // Tampilkan notifikasi saat berhasil
+        Notification::make()
+            ->title('Status berhasil diperbarui')
+            ->success()
+            ->send();
+    })
+    // Opsional: Jika tetap bermasalah, gunakan custom toggle handler
+    ->disabled(fn (Model $record): bool => 
+        // Misalnya: mencegah toggle jika sedang dalam kondisi tertentu
+        false
+),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
