@@ -118,12 +118,7 @@ class DataHarianResource extends Resource
             ->title('Status berhasil diperbarui')
             ->success()
             ->send();
-    })
-    // Opsional: Jika tetap bermasalah, gunakan custom toggle handler
-    ->disabled(fn (Model $record): bool => 
-        // Misalnya: mencegah toggle jika sedang dalam kondisi tertentu
-        false
-),
+    }),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
