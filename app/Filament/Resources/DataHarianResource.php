@@ -119,14 +119,54 @@ class DataHarianResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\Filter::make('tanggal')
-                    ->label('Tanggal')
+                // Perbaikan filter tanggal
+                Tables\Filters\Filter::make('filter_tanggal')
+                    ->label('Filter Tanggal')
                     ->form([
-                        Forms\Components\DatePicker::make('tanggal'),
+                        Forms\Components\DatePicker::make('tanggal')
+                            ->label('Pilih Tanggal')
+                            ->displayFormat('d/m/Y')
+                            ->default(null),
                     ])
+                    ->indicateUsing(function (array $data): ?string {
+                        if (!isset($data['tanggal']) || !$data['tanggal']) {
+                            return null;
+                        }
+
+                        return 'Tanggal: ' . \Carbon\Carbon::parse($data['tanggal'])->format('d/m/Y');
+                    })
                     ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when($data['tanggal'], fn ($q, $tanggal) => $q->whereDate('tanggal', $tanggal));
+                        try {
+                            // Log untuk debugging
+                            Log::info('Filter tanggal dengan data: ', $data);
+
+                            // Jika tanggal tidak ada atau kosong, return query asli
+                            if (!isset($data['tanggal']) || !$data['tanggal']) {
+                                return $query;
+                            }
+
+                            $tanggal = $data['tanggal'];
+
+                            // Periksa apakah tanggal sudah dalam bentuk Carbon atau string
+                            if ($tanggal instanceof \Carbon\Carbon) {
+                                $formattedDate = $tanggal->format('Y-m-d');
+                            } else {
+                                // Jika string, pastikan format Y-m-d
+                                $formattedDate = \Carbon\Carbon::parse($tanggal)->format('Y-m-d');
+                            }
+
+                            // Log query yang akan dijalankan
+                            Log::info("Menjalankan query whereDate('tanggal', {$formattedDate})");
+
+                            // Return query dengan filter tanggal
+                            return $query->whereDate('tanggal', $formattedDate);
+                        } catch (\Exception $e) {
+                            // Log error
+                            Log::error('Error pada filter tanggal: ' . $e->getMessage());
+
+                            // Jika terjadi error, return query asli
+                            return $query;
+                        }
                     }),
             ])
             ->actions([
