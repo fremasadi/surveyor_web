@@ -47,7 +47,7 @@ class DataHarianResource extends Resource
                     ->label('Penjual')
                     ->relationship('responden', 'name') // Menggunakan relasi untuk mengambil nama responden
                     ->required(),
-                
+
 
                 Forms\Components\DatePicker::make('tanggal')
                     ->label('Tanggal')
@@ -118,15 +118,21 @@ class DataHarianResource extends Resource
                     ->dateTime()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([])
+            ->filters([
+                Tables\Filters\Filter::make('tanggal')
+                    ->label('Tanggal')
+                    ->form([
+                        Forms\Components\DatePicker::make('tanggal'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['tanggal'], fn ($q, $tanggal) => $q->whereDate('tanggal', $tanggal));
+                    }),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('cetak_pdf')
-                    ->label('Cetak PDF')
-                    ->icon('heroicon-o-printer')
-                    ->url(fn ($record) => route('data-harian.cetak-pdf', $record))
-                    ->openUrlInNewTab(),
-            ])            
+
+            ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
