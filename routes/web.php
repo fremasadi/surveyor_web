@@ -18,4 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin/data-harian/cetak-pdf', [DataHarianPdfController::class, 'cetakPdf'])->name('data-harian.cetak-pdf');
+Route::get('/data-harian/cetak-pdf', [DataHarianPdfController::class, 'cetakPdf'])->name('data-harian.cetak-pdf');

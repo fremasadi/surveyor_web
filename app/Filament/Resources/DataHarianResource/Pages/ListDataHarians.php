@@ -17,20 +17,19 @@ class ListDataHarians extends ListRecords
         return [
             Actions\CreateAction::make(),
             Action::make('cetak_pdf')
-    ->label('Cetak PDF')
-    ->icon('heroicon-o-printer')
-    ->form([
-        DatePicker::make('tanggal')
-            ->label('Tanggal')
-            ->required(),
-    ])
-    ->action(function (array $data) {
-        $tanggal = $data['tanggal'];
-        $url = route('data-harian.cetak-pdf', ['tanggal' => $tanggal]);
-
-        return redirect($url);
-    })
-    ->color('success'),
+                ->label('Cetak PDF')
+                ->icon('heroicon-o-printer')
+                ->form([
+                    DatePicker::make('tanggal')
+                        ->label('Tanggal')
+                        ->required(),
+                ])
+                ->action(function (array $data) {
+                    $tanggal = $data['tanggal'];
+                    // Pastikan format tanggal sesuai dengan yang diharapkan
+                    return redirect()->route('data-harian.cetak-pdf', ['tanggal' => $tanggal->format('Y-m-d')]);
+                })
+                ->color('success'),
         ];
     }
 
