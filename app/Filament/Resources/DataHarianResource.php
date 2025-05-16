@@ -66,7 +66,7 @@ class DataHarianResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
             ->columns([
@@ -96,11 +96,11 @@ class DataHarianResource extends Resource
                 Tables\Columns\TextColumn::make('data_input')
                     ->label('Harga Input')
                     ->searchable(),
-                    Tables\Columns\TextColumn::make('komoditas.satuan')
+                Tables\Columns\TextColumn::make('komoditas.satuan')
                     ->label('Satuan')
                     ->sortable()
                     ->searchable(),
-                    Tables\Columns\ToggleColumn::make('status')
+                Tables\Columns\ToggleColumn::make('status')
                     ->label('Status')
                     ->onIcon('heroicon-o-check') // Ikon untuk status true
                     ->offIcon('heroicon-o-x-circle') // Ikon untuk status false
@@ -172,10 +172,11 @@ class DataHarianResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
